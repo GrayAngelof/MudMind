@@ -1,0 +1,1 @@
+& "D:\Installed Program\Tools\miniconda3\Scripts\Activate.ps1" mudmind-dev
