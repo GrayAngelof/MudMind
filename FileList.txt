@@ -1,171 +1,164 @@
 полная структура проекта MudMind**
 
-E:\Projects\MudMind\                    # КОРЕНЬ ПРОЕКТА - все файлы проекта
-├── .gitignore                         # Git: какие файлы игнорировать при коммите
-├── LICENSE                            # Лицензия проекта (MIT/GPL/etc)
-├── README.md                          # Документация проекта на GitHub
-├── pyproject.toml                     # Конфигурация Python проекта и зависимости
-├── activate.ps1                       # PowerShell скрипт активации окружения
-├── activate.bat                       # CMD скрипт активации окружения
-├── test_model.py                      # Тестовый скрипт проверки модели
-├── requirements-dev.txt               # Доп. зависимости для разработки
+..\MudMind\                  	 			# КОРЕНЬ ПРОЕКТА - все файлы проекта
+├── .gitignore                    	    	# Git: какие файлы игнорировать при коммите
+├── LICENSE                           		# Лицензия проекта (MIT/GPL/etc)
+├── README.md                        		# Документация проекта на GitHub
+├── pyproject.toml                   		# Конфигурация Python проекта и зависимости
+├── activate.ps1                    		# PowerShell скрипт активации окружения
+├── activate.bat                    		# CMD скрипт активации окружения
+├── test_model.py                     		# Тестовый скрипт проверки модели
+├── requirements-dev.txt              		# Доп. зависимости для разработки
 │
-├── environments\                      # ЛОКАЛЬНЫЕ ОКРУЖЕНИЯ COND - НЕ в Git
-│   └── mudmind-dev\                   # Наше основное окружение разработки
-│       ├── conda-meta\                # Метаданные Conda пакетов
-│       ├── Scripts\                   # Исполняемые скрипты (activate, python)
-│       ├── Library\                   # Библиотеки Conda
-│       └── etc\                       # Конфигурационные файлы Conda
+├── environments\                      		# ЛОКАЛЬНЫЕ ОКРУЖЕНИЯ COND - НЕ в Git
+│   └── mudmind-dev\                   		# Наше основное окружение разработки
+│       ├── conda-meta\                		# Метаданные Conda пакетов
+│       ├── Scripts\                   		# Исполняемые скрипты (activate, python)
+│       ├── Library\                   		# Библиотеки Conda
+│       └── etc\                       		# Конфигурационные файлы Conda
 │
-├── src\                               # ИСХОДНЫЙ КОД - коммитим в Git, войдет в EXE
-│   └── mudmind\                       # Основной Python пакет
-│       ├── __init__.py                # Инициализация пакета, экспорт API
-│       ├── __main__.py                # Точка входа: python -m mudmind
+├── src\                               		# ИСХОДНЫЙ КОД - коммитим в Git, войдет в EXE
+│   └── mudmind\                       		# Основной Python пакет
+│       ├── __init__.py                		# Инициализация пакета, экспорт API
+│       ├── __main__.py                		# Точка входа: python -m mudmind
 │       │
-│       ├── domain\                    # ⭐ ДОМЕННАЯ ЛОГИКА - чистые данные без зависимостей
-│       │   ├── __init__.py            # Экспорт доменных классов
-│       │   ├── events.py              # Классы событий (MudOutputReceived и др.)
-│       │   ├── state.py               # Состояние сессии (SessionState, Location)
-│       │   ├── commands.py            # Команды пользователя и ИИ
-│       │   ├── mud_models.py          # Модели MUD мира (NPC, Item, Quest)
-│       │   └── exceptions.py          # Доменные исключения
+│       ├── domain\                    		# ДОМЕННАЯ ЛОГИКА - чистые данные без зависимостей
+│       │   ├── __init__.py            		# Экспорт доменных классов
+│       │   ├── events.py              		# Классы событий (MudOutputReceived и др.)
+│       │   ├── state.py               		# Состояние сессии (SessionState, Location)
+│       │   ├── commands.py            		# Команды пользователя и ИИ
+│       │   ├── mud_models.py          		# Модели MUD мира (NPC, Item, Quest)
+│       │   ├── exceptions.py          		# Доменные исключения
+│       │   └── priority_levels.py     		# Константы/Enum приоритетов (CRITICAL, HIGH, MEDIUM, LOW)
 │       │
-│       ├── core\                      # ⭐ ЯДРО ПРИЛОЖЕНИЯ - бизнес-логика
-│       │   ├── __init__.py            # Экспорт core модулей
-│       │   ├── event_bus.py           # Шина событий - связующее звено между компонентами
-│       │   ├── mud_client.py          # TCP клиент для подключения к MUD серверу
-│       │   ├── knowledge_base.py      # Управление базой знаний (SQLite + ChromaDB)
+│       ├── core\                      		# ЯДРО ПРИЛОЖЕНИЯ - бизнес-логика
+│       │   ├── __init__.py            		# Экспорт core модулей
+│       │   ├── event_bus.py           		# Шина событий - связующее звено между компонентами
+│       │   ├── mud_client.py          		# TCP клиент для подключения к MUD серверу
+│       │   ├── knowledge_base.py      		# Управление базой знаний (SQLite + ChromaDB)
 │       │   │
-│       │   ├── ai\                    # ⭐ РАЗДЕЛЕННАЯ AI СИСТЕМА - избегаем God-объекта
-│       │   │   ├── __init__.py        # Экспорт AI компонентов
-│       │   │   ├── orchestrator.py    # Тонкий фасад-координатор (связывает компоненты)
-│       │   │   ├── model_router.py    # Выбор модели (micro/external) по сложности задачи
-│       │   │   ├── mode_controller.py # Управление режимами (советник/исполнитель/стенограф)
-│       │   │   ├── context_manager.py # Формирование промптов, истории, контекста для LLM
-│       │   │   ├── decision_maker.py  # Принятие финальных решений на основе анализа
-│       │   │   ├── strategy_executor.py # Выполнение стратегий (autopilot, сбор предметов)
-│       │   │   ├── prompt_builder.py  # Построение оптимизированных промптов для моделей
-│       │   │   ├── fallback_handler.py # Обработка сбоев AI, fallback-эвристики
-│       │   │   └── models\            # Обертки и загрузчики моделей
-│       │   │       ├── __init__.py    # Экспорт модельных классов
-│       │   │       ├── micro_model.py # Обертка микро-модели (быстрая, вшитая)
-│       │   │       ├── external_model.py # Обертка внешней модели (большая, опциональная)
-│       │   │       └── model_wrapper.py # Базовый класс модели (абстракция)
+│       │   ├── ai\                    		# РАЗДЕЛЕННАЯ AI СИСТЕМА - избегаем God-объекта
+│       │   │   ├── __init__.py        		# Экспорт AI компонентов
+│       │   │   ├── orchestrator.py    		# Тонкий фасад-координатор (связывает компоненты)
+│       │   │   ├── model_router.py    		# Выбор модели (micro/external) по сложности задачи
+│       │   │   ├── mode_controller.py 		# Управление режимами (советник/исполнитель/стенограф)
+│       │   │   ├── context_manager.py 		# Формирование промптов, истории, контекста для LLM
+│       │   │   ├── decision_maker.py  		# Принятие финальных решений на основе анализа
+│       │   │   ├── strategy_executor.py 	# Выполнение стратегий (autopilot, сбор предметов)
+│       │   │   ├── prompt_builder.py  		# Построение оптимизированных промптов для моделей
+│       │   │   ├── fallback_handler.py 	# Обработка сбоев AI, fallback-эвристики
+│       │   │   └── models\            		# Обертки и загрузчики моделей
+│       │   │       ├── __init__.py    		# Экспорт модельных классов
+│       │   │       ├── micro_model.py 		# Обертка микро-модели (быстрая, вшитая)
+│       │   │       ├── external_model.py 	# Обертка внешней модели (большая, опциональная)
+│       │   │       └── model_wrapper.py 	# Базовый класс модели (абстракция)
 │       │   │
-│       │   └── reflex\                # ⭐ РЕФЛЕКСНЫЙ ПАЙПЛАЙН - быстрая обработка
-│       │       ├── __init__.py        # Экспорт reflex модулей
-│       │       ├── pipeline.py        # Оркестратор пайплайна (вызов стадий по порядку)
-│       │       ├── parser.py          # Парсинг текста MUD (regex, извлечение сущностей)
-│       │       ├── classifier.py      # Классификация ситуации (комната/бой/диалог)
-│       │       ├── suggester.py       # Генерация предложений (интеграция с LLM)
-│       │       ├── executor.py        # Автоматическое выполнение команд (auto-look)
-│       │       ├── cache.py           # Кэширование результатов парсинга
-│       │       └── fallback.py        # Fallback-эвристики если LLM недоступен
+│       │   └── reflex\                		# РЕФЛЕКСНЫЙ ПАЙПЛАЙН - быстрая обработка
+│       │       ├── __init__.py        		# Экспорт reflex модулей
+│       │       ├── pipeline.py        		# Оркестратор пайплайна (вызов стадий по порядку)
+│       │       ├── parser.py          		# Парсинг текста MUD (regex, извлечение сущностей)
+│       │       ├── classifier.py      		# Классификация ситуации (комната/бой/диалог)
+│       │       ├── suggester.py       		# Генерация предложений (интеграция с LLM)
+│       │       ├── executor.py        		# Автоматическое выполнение команд (auto-look)
+│       │       ├── cache.py           		# Кэширование результатов парсинга
+│       │       ├── fallback.py        		# Fallback-эвристики если LLM недоступен
+│       │       ├── rule_engine.py     		# Загрузка и применение пользовательских правил (CRITICAL и т.д.)
+│       │       └── command_sequencer.py 	# Управление очередью команд (таймауты, прерывания, FIFO)
 │       │
-│       ├── gui\                       # ⭐ ГРАФИЧЕСКИЙ ИНТЕРФЕЙС - слой представления
-│       │   ├── __init__.py            # Экспорт GUI модулей
-│       │   ├── main_window.py         # Главное окно приложения (макет, меню)
-│       │   ├── widgets.py             # Переиспользуемые элементы GUI (кнопки, поля)
-│       │   ├── event_handlers.py      # Обработчики событий (подписка на EventBus)
-│       │   └── themes.py              # Темы оформления (цвета, шрифты)
+│       ├── gui\                       		# ГРАФИЧЕСКИЙ ИНТЕРФЕЙС - слой представления
+│       │   ├── __init__.py            		# Экспорт GUI модулей
+│       │   ├── main_window.py         		# Главное окно приложения (макет, меню)
+│       │   ├── widgets.py             		# Переиспользуемые элементы GUI (кнопки, поля)
+│       │   ├── event_handlers.py      		# Обработчики событий (подписка на EventBus)
+│       │   └── themes.py              		# Темы оформления (цвета, шрифты)
 │       │
-│       └── utils\                     # ⭐ ВСПОМОГАТЕЛЬНЫЕ УТИЛИТЫ
-│           ├── __init__.py            # Экспорт утилит
-│           ├── paths.py               # ⭐ КРИТИЧНО: работа с путями в EXE и разработке
-│           ├── config.py              # Загрузка и сохранение конфигурации
-│           ├── parsers.py             # Утилиты парсинга (цвета ANSI, форматы)
-│           ├── logging.py             # Настройка логирования
-│           └── validators.py          # Валидация входных данных
+│       └── utils\                     		# ВСПОМОГАТЕЛЬНЫЕ УТИЛИТЫ
+│           ├── __init__.py            		# Экспорт утилит
+│           ├── paths.py               		# КРИТИЧНО: работа с путями в EXE и разработке
+│           ├── config.py              		# Загрузка и сохранение конфигурации
+│           ├── parsers.py             		# Утилиты парсинга (цвета ANSI, форматы)
+│           ├── logging.py             		# Настройка логирования
+│           └── validators.py          		# Валидация входных данных
 │
-├── data\                              # ДАННЫЕ ПРИЛОЖЕНИЯ - НЕ в Git, войдет в EXE
-│   ├── models\                        # МОДЕЛИ ИИ (тяжелые файлы)
-│   │   ├── micro\                     # Микро-модели (быстрые, вшитые)
-│   │   │   └── mudreflex-core.gguf    # Основная микро-модель (~500MB)
-│   │   └── external\                  # Внешние большие модели (Llama, Cydonia)
-│   │       └── (пользователь кладет сам) # Пользователь добавляет свои модели
-│   ├── configs\                       # КОНФИГУРАЦИОННЫЕ ФАЙЛЫ
-│   │   ├── default_settings.json      # Настройки по умолчанию
-│   │   ├── mud_servers.json           # Список MUD серверов
-│   │   └── ai_profiles.json           # Профили поведения ИИ
-│   └── databases\                     # БАЗЫ ДАННЫХ
-│       ├── knowledge.db               # SQLite: знания о мире MUD
-│       ├── sessions.db                # SQLite: история сессий
-│       └── vector_store\              # ChromaDB: векторные эмбеддинги
+├── data\                              		# ДАННЫЕ ПРИЛОЖЕНИЯ - НЕ в Git, войдет в EXE
+│   ├── models\                        		# МОДЕЛИ ИИ (тяжелые файлы)
+│   │   ├── micro\                     		# Микро-модели (быстрые, вшитые)
+│   │   │   └── mudreflex-core.gguf    		# Основная микро-модель (~500MB)
+│   │   └── external\                  		# Внешние большие модели (Llama, Cydonia)
+│   │       └── (пусто) 					# Пользователь добавляет свои модели
+│   ├── configs\                       		# КОНФИГУРАЦИОННЫЕ ФАЙЛЫ
+│   │   ├── default_settings.json      		# Настройки по умолчанию
+│   │   ├── mud_servers.json           		# Список MUD серверов
+│   │   ├── ai_profiles.json           		# Профили поведения ИИ
+│   │   ├── default_rules.json         		# Шаблон пользовательских правил по умолчанию
+│   │   └── user_rules.json            		# Пользовательские правила (CRITICAL условия и действия)
+│   └── databases\                     		# БАЗЫ ДАННЫХ
+│       ├── knowledge.db               		# SQLite: знания о мире MUD
+│       ├── sessions.db                		# SQLite: история сессий
+│       └── vector_store\              		# ChromaDB: векторные эмбеддинги
 │
-├── resources\                         # СТАТИЧЕСКИЕ РЕСУРСЫ - войдет в EXE
-│   ├── icons\                         # ИКОНКИ И ИЗОБРАЖЕНИЯ
-│   │   ├── app_icon.ico               # Иконка приложения для Windows
-│   │   ├── mud_icon.png               # Иконка для MUD панели
-│   │   └── ai_icon.png                # Иконка для ИИ панели
-│   ├── fonts\                         # ШРИФТЫ
-│   │   └── monospace.ttf              # Моноширинный шрифт для текста MUD
-│   └── themes\                        # ТЕМЫ ОФОРМЛЕНИЯ GUI
-│       ├── dark.json                  # Темная тема (цвета, отступы)
-│       ├── light.json                 # Светлая тема
-│       └── classic.json               # Классическая (зеленый на черном)
+├── resources\                         		# СТАТИЧЕСКИЕ РЕСУРСЫ - войдет в EXE
+│   ├── icons\                         		# ИКОНКИ И ИЗОБРАЖЕНИЯ
+│   │   ├── app_icon.ico               		# Иконка приложения для Windows
+│   │   ├── mud_icon.png               		# Иконка для MUD панели
+│   │   └── ai_icon.png                		# Иконка для ИИ панели
+│   ├── fonts\                         		# ШРИФТЫ
+│   │   └── monospace.ttf              		# Моноширинный шрифт для текста MUD
+│   └── themes\                        		# ТЕМЫ ОФОРМЛЕНИЯ GUI
+│       ├── dark.json                  		# Темная тема (цвета, отступы)
+│       ├── light.json                 		# Светлая тема
+│       └── classic.json               		# Классическая (зеленый на черном)
 │
-├── tools\                             # ИНСТРУМЕНТЫ РАЗРАБОТКИ - НЕ в EXE
-│   ├── dataset_tools\                 # ИНСТРУМЕНТЫ ДЛЯ РАБОТЫ С ДАТАСЕТАМИ
-│   │   ├── collect_logs.py            # Сбор логов из реальных MUD сессий
-│   │   ├── label_ui.py                # Графический интерфейс для разметки данных
-│   │   └── validate_dataset.py        # Проверка качества датасета
-│   ├── model_tools\                   # ИНСТРУМЕНТЫ ДЛЯ РАБОТЫ С МОДЕЛЯМИ (отдельный проект)
-│   │   ├── train_lora.py              # Скрипт дообучения моделей (LoRA)
-│   │   ├── quantize_gguf.py           # Квантование моделей в GGUF формат
-│   │   ├── evaluate_model.py          # Оценка качества модели
-│   │   └── export_for_runtime.py      # Подготовка модели для runtime
-│   ├── mud_simulator\                 # СИМУЛЯТОР MUD ДЛЯ ТЕСТИРОВАНИЯ
-│   │   ├── fake_server.py             # Фейковый MUD сервер для тестов
-│   │   ├── scenario_player.py         # Воспроизведение сценариев
-│   │   └── test_scripts\              # Тестовые скрипты и сценарии
-│   ├── dev_utils\                     # УТИЛИТЫ РАЗРАБОТЧИКА
-│   │   ├── benchmark.py               # Бенчмарк производительности
-│   │   ├── profile_reflex.py          # Профилирование reflex пайплайна
-│   │   └── memory_monitor.py          # Мониторинг использования памяти
-│   └── analysis\                      # АНАЛИТИКА И ВИЗУАЛИЗАЦИЯ
-│       ├── analyze_logs.py            # Анализ логов работы приложения
-│       └── visualize_decisions.py     # Визуализация принятия решений ИИ
+├── tools\                             		# ИНСТРУМЕНТЫ РАЗРАБОТКИ - НЕ в EXE
+│   ├── dataset_tools\                 		# ИНСТРУМЕНТЫ ДЛЯ РАБОТЫ С ДАТАСЕТАМИ
+│   │   ├── collect_logs.py            		# Сбор логов из реальных MUD сессий
+│   │   ├── label_ui.py                		# Графический интерфейс для разметки данных
+│   │   └── validate_dataset.py        		# Проверка качества датасета
+│   ├── model_tools\                   		# ИНСТРУМЕНТЫ ДЛЯ РАБОТЫ С МОДЕЛЯМИ (отдельный проект)
+│   │   ├── train_lora.py              		# Скрипт дообучения моделей (LoRA)
+│   │   ├── quantize_gguf.py           		# Квантование моделей в GGUF формат
+│   │   ├── evaluate_model.py          		# Оценка качества модели
+│   │   └── export_for_runtime.py      		# Подготовка модели для runtime
+│   ├── mud_simulator\                 		# СИМУЛЯТОР MUD ДЛЯ ТЕСТИРОВАНИЯ
+│   │   ├── fake_server.py             		# Фейковый MUD сервер для тестов
+│   │   ├── scenario_player.py         		# Воспроизведение сценариев
+│   │   └── test_scripts\              		# Тестовые скрипты и сценарии
+│   ├── dev_utils\                     		# УТИЛИТЫ РАЗРАБОТЧИКА
+│   └── analysis\                      		# АНАЛИТИКА И ВИЗУАЛИЗАЦИЯ
+│       ├── analyze_logs.py            		# Анализ логов работы приложения
+├── packaging\                         		# ВСЁ ДЛЯ СБОРКИ EXE И ИНСТАЛЛЯТОРОВ
+│   ├── mudmind.spec                   		# КОНФИГ PyInstaller - что включать в EXE
+│   ├── hooks\                         		# КАСТОМНЫЕ ХУКИ PyInstaller
+│   │   ├── hook-llama_cpp.py          		# Хук для llama-cpp-python (библиотеки)
+│   │   ├── hook-dearpygui.py          		# Хук для Dear PyGui (ресурсы)
+│   │   └── hook-sqlalchemy.py         		# Хук для SQLAlchemy (диалекты)
+│   ├── resources\                     		# РЕСУРСЫ ДЛЯ СБОРКИ
+│   │   ├── mudmind.ico                		# Иконка для EXE файла
+│   │   ├── splash.png                 		# Заставка при запуске
+│   │   └── version_info.txt           		# Информация о версии для Windows
+│   └── installers\                    		# СКРИПТЫ ДЛЯ СОЗДАНИЯ ИНСТАЛЛЯТОРОВ
+│       ├── inno_setup.iss             		# Скрипт для Inno Setup (Windows)
+│       └── nsis_script.nsi            		# Скрипт для NSIS (альтернатива)
 │
-├── packaging\                         # ВСЁ ДЛЯ СБОРКИ EXE И ИНСТАЛЛЯТОРОВ
-│   ├── mudmind.spec                   # ⭐ КОНФИГ PyInstaller - что включать в EXE
-│   ├── hooks\                         # ⭐ КАСТОМНЫЕ ХУКИ PyInstaller
-│   │   ├── hook-llama_cpp.py          # Хук для llama-cpp-python (библиотеки)
-│   │   ├── hook-dearpygui.py          # Хук для Dear PyGui (ресурсы)
-│   │   └── hook-sqlalchemy.py         # Хук для SQLAlchemy (диалекты)
-│   ├── resources\                     # РЕСУРСЫ ДЛЯ СБОРКИ
-│   │   ├── mudmind.ico                # Иконка для EXE файла
-│   │   ├── splash.png                 # Заставка при запуске
-│   │   └── version_info.txt           # Информация о версии для Windows
-│   └── installers\                    # СКРИПТЫ ДЛЯ СОЗДАНИЯ ИНСТАЛЛЯТОРОВ
-│       ├── inno_setup.iss             # Скрипт для Inno Setup (Windows)
-│       └── nsis_script.nsi            # Скрипт для NSIS (альтернатива)
+├── experiments\                       		# ЭКСПЕРИМЕНТЫ И ИССЛЕДОВАНИЯ - НЕ в EXE
+│   ├── micro_model_tests.ipynb        		# Jupyter: тестирование микро-модели
+│   ├── prompt_engineering.ipynb       		# Jupyter: эксперименты с промптами
+│   ├── gui_prototypes.ipynb           		# Jupyter: прототипы интерфейса
+│   └── mud_analysis.ipynb             		# Jupyter: анализ данных MUD
 │
-├── experiments\                       # ЭКСПЕРИМЕНТЫ И ИССЛЕДОВАНИЯ - НЕ в EXE
-│   ├── micro_model_tests.ipynb        # Jupyter: тестирование микро-модели
-│   ├── prompt_engineering.ipynb       # Jupyter: эксперименты с промптами
-│   ├── gui_prototypes.ipynb           # Jupyter: прототипы интерфейса
-│   └── mud_analysis.ipynb             # Jupyter: анализ данных MUD
-│
-├── tests\                             # ТЕСТЫ - коммитим в Git, НЕ в EXE
-│   ├── __init__.py                    # Инициализация тестового пакета
-│   ├── conftest.py                    # Фикстуры pytest
-│   ├── test_domain.py                 # Тесты доменного слоя (events, state)
-│   ├── test_reflex_pipeline.py        # Тесты reflex пайплайна
-│   ├── test_mud_client.py             # Тесты MUD клиента
-│   ├── test_event_bus.py              # Тесты шины событий
-│   ├── test_ai_components.py          # Тесты AI компонентов (роутер, контроллер и т.д.)
-│   ├── integration\                   # ИНТЕГРАЦИОННЫЕ ТЕСТЫ
-│   │   ├── test_cooperative_flow.py   # Тест полного цикла кооперативного режима
-│   │   └── test_with_simulator.py     # Тесты с fake MUD сервером
-│   └── fixtures\                      # ТЕСТОВЫЕ ДАННЫЕ
-│       ├── mud_outputs\               # Примеры вывода MUD для тестов
-│       └── test_models\               # Тестовые модели (маленькие)
-│
-└── build\                             # АРТЕФАКТЫ СБОРКИ - НЕ в Git, НЕ в EXE
-    ├── dist\                          # ГОТОВЫЕ СБОРКИ
-    │   └── MudMind.exe                # Финальный EXE файл
-    ├── installer\                     # СОБРАННЫЕ ИНСТАЛЛЯТОРЫ
-    │   └── MudMind_Setup.exe          # Установщик Windows
-    └── logs\                          # ЛОГИ СБОРКИ
-        ├── build.log                  # Лог процесса сборки
-        └── packaging.log              # Лог упаковки
+├── tests\                             		# ТЕСТЫ - коммитим в Git, НЕ в EXE
+│   ├── __init__.py                    		# Инициализация тестового пакета
+│   ├── conftest.py                    		# Фикстуры pytest
+│   ├── test_domain.py                 		# Тесты доменного слоя (events, state)
+│   ├── test_reflex_pipeline.py        		# Тесты reflex пайплайна
+│   ├── test_mud_client.py             		# Тесты MUD клиента
+│   ├── test_event_bus.py              		# Тесты шины событий
+│   ├── test_ai_components.py          		# Тесты AI компонентов (роутер, контроллер и т.д.)
+│   ├── test_rule_engine.py            		# Тесты rule_engine (применение правил)
+│   ├── test_command_sequencer.py      		# Тесты command_sequencer (очередь, таймауты, прерывания)
+│   ├── integration\                   		# ИНТЕГРАЦИОННЫЕ ТЕСТЫ
+│   │   ├── test_cooperative_flow.py   		# Тест полного цикла кооперативного режима
+│   │   └── test_with_simulator.py     		# Тесты с fake MUD сервером
+│   └── fixtures\                      		# ТЕСТОВЫЕ ДАННЫЕ
+│       ├── mud_outputs\               		# Примеры вывода MUD для тестов
+│       └── sample_rules.json          		# Примеры правил для тестов rule_engine
