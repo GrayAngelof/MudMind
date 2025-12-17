@@ -29,12 +29,14 @@
 │       │   ├── commands.py            		# Команды пользователя и ИИ
 │       │   ├── mud_models.py          		# Модели MUD мира (NPC, Item, Quest)
 │       │   ├── exceptions.py          		# Доменные исключения
+			├──	rules.py 		            # Правила доменной модели + PriorityLevel
 │       │   └── priority_levels.py     		# Константы/Enum приоритетов (CRITICAL, HIGH, MEDIUM, LOW)
 │       │
 │       ├── core\                      		# ЯДРО ПРИЛОЖЕНИЯ - бизнес-логика
 │       │   ├── __init__.py            		# Экспорт core модулей
 │       │   ├── event_bus.py           		# Шина событий - связующее звено между компонентами
 │       │   ├── mud_client.py          		# TCP клиент для подключения к MUD серверу
+			├──	state_manager.py	        # Менеджер состояния с событиями обновления
 │       │   ├── knowledge_base.py      		# Управление базой знаний (SQLite + ChromaDB)
 │       │   │
 │       │   ├── ai\                    		# РАЗДЕЛЕННАЯ AI СИСТЕМА - избегаем God-объекта
