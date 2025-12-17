@@ -4,7 +4,7 @@ channels:
   - nvidia
 dependencies:
   - python=3.10
-  - cuda-toolkit=12.1  # Match your CUDA version
+  - cuda-toolkit=12.8  # Match your CUDA version
   - cudnn
   - pip
   - pip:
