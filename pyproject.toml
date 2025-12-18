@@ -1,25 +1,33 @@
 [tool.poetry]
 name = "mudmind"
 version = "0.1.0"
-description = "Cooperative MUD client with AI assistant"
-authors = ["Your Name <your.email@example.com>"]
-license = "MIT"
+description = "MudMind MVP - текстовые MUD игры с ИИ ассистентом"
+authors = ["GrayAngelof"]
 readme = "README.md"
+license = "MIT"
+python = "^3.12"
 
 [tool.poetry.dependencies]
-python = "^3.10"
-dearpygui = "^1.10.1"
-llama-cpp-python = {version = "^0.2.89", extras = ["cuda"]}  # With CUDA support
-sqlalchemy = "^2.0.23"
-aiosqlite = "^0.19.0"
-asyncio = {version = "^3.4.3", python = "<3.12"}  # If needed for compatibility
+python = "^3.12"
+numpy = "2.3.5"
+jinja2 = "3.1.6"
+typing-extensions = "4.15.0"
+diskcache = "5.6.3"
+httpx = "0.28.1"
+requests = "2.32.5"
+anyio = "4.12.0"
+MarkupSafe = "3.0.3"
+more-itertools = "10.8.0"
+msgpack = "1.1.2"
+packaging = "25.0"
+setuptools = "80.9.0"
+wheel = "0.45.1"
+zstandard = "0.25.0"
+
+# Локальная установка llama_cpp_python
+llama_cpp_python = {path = "wheels/llama_cpp_python-0.3.8+cu128.gemma3-cp312-cp312-win_amd64.whl"}
 
 [tool.poetry.dev-dependencies]
-pytest = "^7.4.3"
-black = "^23.11.0"
-isort = "^5.12.0"
-mypy = "^1.7.1"
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+# Добавьте, если нужны тесты или линтеры
+pytest = "^8.3"
+black = "^24.9"

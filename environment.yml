@@ -1,14 +1,25 @@
 name: mudmind-dev
 channels:
   - conda-forge
-  - nvidia
+  - defaults
 dependencies:
-  - python=3.10
-  - cuda-toolkit=12.8  # Match your CUDA version
-  - cudnn
+  - python=3.12
   - pip
+  - numpy
+  - jinja2
+  - typing-extensions
+  - diskcache
   - pip:
-    - dearpygui==1.10.1
-    - llama-cpp-python[cuda]==0.2.89
-    - sqlalchemy==2.0.23
-    - aiosqlite==0.19.0
+      - file: wheels/llama_cpp_python-0.3.8+cu128.gemma3-cp312-cp312-win_amd64.whl
+      - anyio==4.12.0
+      - httpx==0.28.1
+      - requests==2.32.5
+      - certifi==2025.11.12
+      - charset-normalizer==3.4.4
+      - MarkupSafe==3.0.3
+      - more-itertools==10.8.0
+      - msgpack==1.1.2
+      - packaging==25.0
+      - setuptools==80.9.0
+      - wheel==0.45.1
+      - zstandard==0.25.0

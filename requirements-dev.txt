@@ -1,4 +1,24 @@
-pytest==7.4.3
-black==23.11.0
-isort==5.12.0
-mypy==1.7.1
+# Основные зависимости
+numpy==2.3.5
+Jinja2==3.1.6
+typing-extensions==4.15.0
+diskcache==5.6.3
+
+# llama_cpp_python локально
+llama_cpp_python @ file://./wheels/llama_cpp_python-0.3.8+cu128.gemma3-cp312-cp312-win_amd64.whl
+
+# HTTP/REST
+httpx==0.28.1
+requests==2.32.5
+certifi==2025.11.12
+charset-normalizer==3.4.4
+
+# Вспомогательные
+anyio==4.12.0
+MarkupSafe==3.0.3
+more-itertools==10.8.0
+msgpack==1.1.2
+packaging==25.0
+setuptools==80.9.0
+wheel==0.45.1
+zstandard==0.25.0
